@@ -54,5 +54,19 @@ func main() {
 		return c.JSON(todos)
 	})
 
+	app.Get("/api/todos", func(c *fiber.Ctx) error {
+		return c.JSON(todos)
+	})
+
+	app.Get("api/todos/:id", func(c *fiber.Ctx) error {
+		id, err := c.ParamsInt("id")
+
+		if err != nil {
+			return c.Status(401).SendString("Invaild ID")
+		}
+
+		return c.JSON(todos[id-1])
+	})
+
 	log.Fatal(app.Listen(":4000"))
 }
