@@ -19,10 +19,14 @@ func main() {
 
 	todos := []Todo{}
 
+	// This is a health check endpoint
+	// Check if server is running OK
 	app.Get("/healthcheck", func(c *fiber.Ctx) error {
 		return c.SendString("OK")
 	})
 
+	// POST endpoint
+	// Create Todos
 	app.Post("/api/todos", func(c *fiber.Ctx) error {
 		todo := &Todo{}
 
@@ -37,6 +41,8 @@ func main() {
 		return c.JSON(todos)
 	})
 
+	// PATCH endpoint
+	// Mark Todos finished
 	app.Patch("/api/todos/:id/done", func(c *fiber.Ctx) error {
 		id, err := c.ParamsInt("id")
 
@@ -54,10 +60,14 @@ func main() {
 		return c.JSON(todos)
 	})
 
+	// GET endpoint
+	// Retrieve all todos
 	app.Get("/api/todos", func(c *fiber.Ctx) error {
 		return c.JSON(todos)
 	})
 
+	// GET endpoint
+	// Retrieve one todo
 	app.Get("api/todos/:id", func(c *fiber.Ctx) error {
 		id, err := c.ParamsInt("id")
 
@@ -68,5 +78,6 @@ func main() {
 		return c.JSON(todos[id-1])
 	})
 
+	// Server listener
 	log.Fatal(app.Listen(":4000"))
 }
